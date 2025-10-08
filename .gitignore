@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Home Assistant
+.HA_VERSION
+.DS_Store
+deps/
+*.db
+*.log
