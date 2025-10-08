@@ -1,6 +1,6 @@
 {
   "name": "Zone Activity Tracker",
   "render_readme": true,
-  "country": "DK",
+  "country": ["DK"],
   "homeassistant": "2023.1.0"
 }
