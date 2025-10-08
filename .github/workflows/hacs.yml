@@ -1,0 +1,23 @@
+name: HACS Validation
+
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  validation:
+    name: HACS Validation
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout
+        uses: "actions/checkout@v4"
+      - name: HACS Validation
+        uses: "hacs/action@main"
+        with:
+          category: "integration"
+          ignore: "brands"
