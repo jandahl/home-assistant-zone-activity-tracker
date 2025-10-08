@@ -4,9 +4,18 @@ This is a Home Assistant custom integration that tracks when a person enters a s
 
 ## Installation
 
-1.  Install via [HACS](https://hacs.xyz/).
-2.  Restart Home Assistant.
-3.  Go to **Settings > Devices & Services > Add Integration** and search for **Zone Activity Tracker**.
+This integration is not yet part of the default HACS store. You can install it as a custom repository.
+
+1.  Go to your HACS page in Home Assistant.
+2.  Click on the three dots in the top right corner and select "Custom repositories".
+3.  In the dialog, paste the following URL into the "Repository" field:
+    ```
+    https://github.com/jandahl/home-assistant-zone-activity-tracker
+    ```
+4.  Select "Integration" as the category and click "Add".
+5.  The "Zone Activity Tracker" card will now appear. Click "Install" and proceed with the installation.
+6.  Restart Home Assistant.
+7.  Go to **Settings > Devices & Services > Add Integration** and search for **Zone Activity Tracker**.
 
 ## Configuration
 
