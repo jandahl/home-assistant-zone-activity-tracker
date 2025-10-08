@@ -21,4 +21,5 @@ This integration is not yet part of the default HACS store. You can install it a
 
 -   **Person to Track**: Select the person entity to track.
 -   **Trigger Zone**: Select the zone entity that triggers the activity.
+-   **Target Calendar**: Select the calendar entity where the activity log will be created.
 -   **Reset Time**: Set the time for the daily reset (defaults to 04:00:00).

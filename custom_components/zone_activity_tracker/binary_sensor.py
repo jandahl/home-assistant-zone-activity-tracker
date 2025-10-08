@@ -39,6 +39,7 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
 
         person_entity = self.entry.data["person_entity"]
         zone_entity = self.entry.data["zone_entity"]
+        calendar_entity = self.entry.data["calendar_entity"]
         reset_time_str = self.entry.data["reset_time"]
         reset_time = dt_util.parse_time(reset_time_str)
 
@@ -56,7 +57,6 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
         def time_change_listener(now) -> None:
             """Handle daily reset."""
             if self.is_on:
-                calendar_entity_id = f"calendar.zone_activity_log_{self.entry.data['person_entity'].split('.')[1]}_{self.entry.data['zone_entity'].split('.')[1]}"
                 yesterday = (now - timedelta(days=1)).strftime('%Y-%m-%d')
                 today = now.strftime('%Y-%m-%d')
 
@@ -65,7 +65,7 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
                         "calendar",
                         "create_event",
                         {
-                            "entity_id": calendar_entity_id,
+                            "entity_id": calendar_entity,
                             "summary": f"{self._attr_name}",
                             "start_date": yesterday,
                             "end_date": today,

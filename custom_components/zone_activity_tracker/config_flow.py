@@ -27,6 +27,9 @@ class ZoneActivityTrackerConfigFlow(ConfigFlow, domain=DOMAIN):
                 vol.Required("zone_entity"): selector.EntitySelector(
                     selector.EntitySelectorConfig(domain="zone"),
                 ),
+                vol.Required("calendar_entity"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="calendar"),
+                ),
                 vol.Required("reset_time", default="04:00:00"): selector.TimeSelector(),
             }
         )
