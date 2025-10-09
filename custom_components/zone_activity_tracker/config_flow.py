@@ -31,6 +31,9 @@ class ZoneActivityTrackerConfigFlow(ConfigFlow, domain=DOMAIN):
                     selector.EntitySelectorConfig(domain="calendar"),
                 ),
                 vol.Required("reset_time", default="04:00:00"): selector.TimeSelector(),
+                vol.Required("minutes_in_zone", default=5): selector.NumberSelector(
+                    selector.NumberSelectorConfig(min=0, max=1440, mode="box"),
+                ),
             }
         )
 
