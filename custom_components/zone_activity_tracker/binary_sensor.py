@@ -59,18 +59,34 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
                         async_call_later(self.hass, timedelta(minutes=self._minutes_in_zone), self._timer_callback)
                     )
                 else:
-                    # If minutes_in_zone is 0, create event immediately (logic to be moved to _create_calendar_event)
-                    self._attr_is_on = True # This will be set by _timer_callback or _create_calendar_event
-                    self.async_write_ha_state()
+                    # If minutes_in_zone is 0, create event immediately
+                    self.hass.async_create_task(self._create_calendar_event())
+
             else:
                 if self._timer_task:
                     self._timer_task.cancel()
                     self._timer_task = None
 
+        async def _create_calendar_event(self) -> None:
+            """Create a calendar event for the activity."""
+            yesterday = (dt_util.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+            today = dt_util.now().strftime('%Y-%m-%d')
+
+            await self.hass.services.async_call(
+                "calendar",
+                "create_event",
+                {
+                    "entity_id": calendar_entity,
+                    "summary": f"{self._attr_name}",
+                    "start_date": yesterday,
+                    "end_date": today,
+                },
+            )
+
         @callback
         def _timer_callback(now) -> None:
             """Callback for when the timer expires."""
-            # This logic will be moved to _create_calendar_event in Step 4
+            self.hass.async_create_task(self._create_calendar_event())
             self._attr_is_on = True
             self.async_write_ha_state()
             self._timer_task = None
