@@ -7,7 +7,7 @@ from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.event import async_track_state_change_event, async_track_time_change
+from homeassistant.helpers.event import async_track_state_change_event, async_track_time_change, async_call_later
 from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN
@@ -52,8 +52,28 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
             """Handle person state changes."""
             new_state = event.data.get("new_state")
             if new_state and new_state.state == zone_friendly_name:
-                self._attr_is_on = True
-                self.async_write_ha_state()
+                if self._minutes_in_zone > 0:
+                    if self._timer_task:
+                        self._timer_task.cancel()
+                    self._timer_task = self.async_on_remove(
+                        async_call_later(self.hass, timedelta(minutes=self._minutes_in_zone), self._timer_callback)
+                    )
+                else:
+                    # If minutes_in_zone is 0, create event immediately (logic to be moved to _create_calendar_event)
+                    self._attr_is_on = True # This will be set by _timer_callback or _create_calendar_event
+                    self.async_write_ha_state()
+            else:
+                if self._timer_task:
+                    self._timer_task.cancel()
+                    self._timer_task = None
+
+        @callback
+        def _timer_callback(now) -> None:
+            """Callback for when the timer expires."""
+            # This logic will be moved to _create_calendar_event in Step 4
+            self._attr_is_on = True
+            self.async_write_ha_state()
+            self._timer_task = None
 
         @callback
         def time_change_listener(now) -> None:
@@ -77,14 +97,3 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
 
             self._attr_is_on = False
             self.async_write_ha_state()
-
-        self.async_on_remove(
-            async_track_state_change_event(
-                self.hass, [person_entity], state_change_listener
-            )
-        )
-        self.async_on_remove(
-            async_track_time_change(
-                self.hass, time_change_listener, hour=reset_time.hour, minute=reset_time.minute, second=reset_time.second
-            )
-        )

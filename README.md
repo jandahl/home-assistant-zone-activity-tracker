@@ -23,3 +23,10 @@ This integration is not yet part of the default HACS store. You can install it a
 -   **Trigger Zone**: Select the zone entity that triggers the activity.
 -   **Target Calendar**: Select the calendar entity where the activity log will be created.
 -   **Reset Time**: Set the time for the daily reset (defaults to 04:00:00).
+
+## Testing
+
+For quick testing and provoking events, you can use the Home Assistant Developer Tools in the UI:
+
+1.  **Developer Tools -> States:** Manually change the state of your `person` entity (e.g., `person.jan`) to simulate entering or leaving a zone. For example, change its state to the friendly name of a zone to simulate entry.
+2.  **Developer Tools -> Services:** Call any service directly. For instance, you could manually call `calendar.create_event` to test the calendar functionality in isolation, or `homeassistant.update_entity` on your binary sensor to force an update.
