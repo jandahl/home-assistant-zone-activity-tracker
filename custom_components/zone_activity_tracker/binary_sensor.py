@@ -32,6 +32,8 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
         self._attr_is_on = False
         self._attr_unique_id = f"zone_activity_tracker_{entry.data['person_entity'].split('.')[1]}_{entry.data['zone_entity'].split('.')[1]}"
         self._attr_name = f"Zone Activity: {entry.data['person_entity'].split('.')[1].replace("_", " ").title()} in {entry.data['zone_entity'].split('.')[1].replace("_", " ").title()}"
+        self._minutes_in_zone = entry.data["minutes_in_zone"]
+        self._timer_task = None
 
     async def async_added_to_hass(self) -> None:
         """Run when entity about to be added."""
