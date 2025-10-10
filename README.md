@@ -23,6 +23,7 @@ This integration is not yet part of the default HACS store. You can install it a
 -   **Trigger Zone**: Select the zone entity that triggers the activity.
 -   **Target Calendar**: Select the calendar entity where the activity log will be created.
 -   **Reset Time**: Set the time for the daily reset (defaults to 04:00:00).
+-   **Minutes in Zone**: The number of minutes the person must continuously be in the zone before an activity is logged (defaults to 5 minutes). Set to 0 to log immediately upon entry.
 
 ## Testing
 
