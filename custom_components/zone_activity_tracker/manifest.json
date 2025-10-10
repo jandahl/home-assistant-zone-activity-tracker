@@ -1,7 +1,7 @@
 {
   "domain": "zone_activity_tracker",
   "name": "Zone Activity Tracker",
-  "version": "1.10",
+  "version": "1.11",
   "documentation": "https://github.com/jandahl/ha-zone-activity-tracker",
   "issue_tracker": "https://github.com/jandahl/ha-zone-activity-tracker/issues",
   "codeowners": ["@jandahl"],
