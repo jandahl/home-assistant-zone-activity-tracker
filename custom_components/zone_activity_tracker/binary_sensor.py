@@ -94,22 +94,8 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
         @callback
         def time_change_listener(now) -> None:
             """Handle daily reset."""
-            if self.is_on:
-                yesterday = (now - timedelta(days=1)).strftime('%Y-%m-%d')
-                today = now.strftime('%Y-%m-%d')
-
-                self.hass.async_create_task(
-                    self.hass.services.async_call(
-                        "calendar",
-                        "create_event",
-                        {
-                            "entity_id": calendar_entity,
-                            "summary": f"{self._attr_name}",
-                            "start_date": yesterday,
-                            "end_date": today,
-                        },
-                    )
-                )
-
+            if self._timer_task:
+                self._timer_task.cancel()
+                self._timer_task = None
             self._attr_is_on = False
             self.async_write_ha_state()
