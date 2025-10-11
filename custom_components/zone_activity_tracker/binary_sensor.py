@@ -45,13 +45,13 @@ class ZoneActivityBinarySensor(BinarySensorEntity):
         reset_time_str = self.entry.data["reset_time"]
         reset_time = dt_util.parse_time(reset_time_str)
 
-        zone_friendly_name = self.hass.states.get(zone_entity).name
+        zone_state = zone_entity.split('.')[-1]
 
         @callback
         def state_change_listener(event: Event) -> None:
             """Handle person state changes."""
             new_state = event.data.get("new_state")
-            if new_state and new_state.state == zone_friendly_name:
+            if new_state and new_state.state == zone_state:
                 if self._minutes_in_zone > 0:
                     if self._timer_task:
                         self._timer_task.cancel()
