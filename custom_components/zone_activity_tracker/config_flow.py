@@ -1,10 +1,13 @@
 """Config flow for Zone Activity Tracker."""
+import logging
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigFlow
 from homeassistant.helpers import selector
 
 from .const import DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class ZoneActivityTrackerConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -14,6 +17,7 @@ class ZoneActivityTrackerConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
+        _LOGGER.info("User input: %s", user_input)
         if user_input is not None:
             person_name = user_input["person_entity"].split('.')[1].replace("_", " ").title()
             zone_name = user_input["zone_entity"].split('.')[1].replace("_", " ").title()
